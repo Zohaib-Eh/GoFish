@@ -50,7 +50,7 @@ export default function Dashboard() {
               Last updated: 5 mins ago
             </Button>
             <Button variant="default" size="sm" className="bg-sky-600 hover:bg-sky-700" onClick={() => {
-              router.push('/make-new-contract');
+              router.push('/add-new-contract');
             }}>
               Add New Contract
             </Button>

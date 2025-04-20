@@ -71,10 +71,10 @@ export default function SignInExporter() {
               </div>
 
               <Button onClick={() => {
-                localStorage.setItem("role", "exporter");
-                localStorage.setItem("imgUrl", "")
-                localStorage.setItem("name", "");
-                localStorage.setItem("email", "");
+                // localStorage.setItem("role", "exporter");
+                // localStorage.setItem("imgUrl", "")
+                // localStorage.setItem("name", "");
+                // localStorage.setItem("email", "");
 
                 router.push('/dashboard-exp');
 

@@ -14,27 +14,9 @@ import { getSignedContract } from "@/lib/contracts"
 import { ethers } from "ethers"
 import { ArrowLeft, Check } from "lucide-react"
 import { useState } from "react"
-import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi"
-import { abi } from "../api/abi"
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi"
 
 export default function ExportPaymentPage() {
-
-  const { isConnected, address } = useAccount();
-
-
-  const CONTRACT_ADDRESS =
-    "0x01BBcf7461398Cb13AAC1D4B28FC917037AD750A0xabBd46Ef74b88E8B1CDa49BeFb5057710443Fd29" as `0x${string}`;
-
-
-  // const { data, refetch } = useReadContract({
-  //   address: CONTRACT_ADDRESS,
-  //   abi,
-  //   functionName: "imp",
-  // });
-
-  const { writeContract, data: hash, error, isPending } = useWriteContract();
-
-  // alert(data);
 
   const [formData, setFormData] = useState({
     importerAddress: "",
@@ -46,15 +28,7 @@ export default function ExportPaymentPage() {
 
 
   async function getDetails() {
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
-    const contract = await getSignedContract(signer);
 
-    const tx = await contract.sd(ethers.encodeBytes32String("hello"));
-
-    const receipt = await tx.wait();
-
-    alert(receipt.hash);
   }
 
   const [outputData, setOutputData] = useState<{
@@ -69,12 +43,8 @@ export default function ExportPaymentPage() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({
-      hash,
-    });
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
       // Convert ether to wei
       const paymentWei = ethers.parseEther(formData.paymentEther || "0").toString()
@@ -87,21 +57,28 @@ export default function ExportPaymentPage() {
         terms: formData.paymentTerms,
       })
 
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = await getSignedContract(signer);
 
+      const tx = await contract.init(
+        formData.exporterAddress,
+        formData.importerAddress,
+        paymentWei,
+        parseInt(formData.paymentTerms) // cast to uint8
+      );
 
-      alert(outputData);
+      const receipt = await tx.wait();
+
+      alert("you have successfully initiated this contract! here is the tx hash");
+      alert(receipt.hash);
+
     } catch (error) {
       console.error("Error processing form:", error)
       alert("Please check your input values and try again.")
     }
   }
 
-  if (!isConnected) {
-    return (<div className="min-h-screen bg-gradient-to-b from-sky-50 to-blue-50">
-      Please Connect your wallet to get started
-      <ConnectWallet classnames={"my-2"} />
-    </div>)
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-cyan-100 to-blue-100">
@@ -172,52 +149,8 @@ export default function ExportPaymentPage() {
             </div>
           </div>
 
-          <ConnectWallet classnames={""} />
-
-          {/* <Button onClick={() => {
-            writeContract({
-              address: CONTRACT_ADDRESS,
-              abi,
-              functionName: "w",
-              args: [],
-            });
-          }}>do transaction</Button> */}
-
           <WalletConnect onConnect={() => { }} />
-          <Button onClick={() => {
-            getDetails();
-          }}>
-            hi
-          </Button>
-          {/* <div>
-            {isPending
-              ? "Waiting for approval..."
-              : isConfirming
-                ? "Confirming..."
-                : "Set Number"}
-          </div> */}
 
-
-
-          {/* {outputData && (
-            <div className="mt-6 p-4 bg-gray-50 rounded-md">
-              <h3 className="font-medium mb-2">Output Data:</h3>
-              <div className="text-sm space-y-1 overflow-x-auto">
-                <p>
-                  <span className="font-medium">Importer Key:</span> {outputData.importerKey}
-                </p>
-                <p>
-                  <span className="font-medium">Exporter Key:</span> {outputData.exporterKey}
-                </p>
-                <p>
-                  <span className="font-medium">Payment (Wei):</span> {outputData.paymentWei}
-                </p>
-                <p>
-                  <span className="font-medium">Terms (Months):</span> {outputData.terms}
-                </p>
-              </div>
-            </div>
-          )} */}
 
           <div className="flex justify-between pt-4">
             <Button variant="outline" type="button">
