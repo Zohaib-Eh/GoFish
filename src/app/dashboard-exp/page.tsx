@@ -1,10 +1,16 @@
-import { DollarSign, Package, Clock, BarChart2, History, ChevronRight } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+'use client'
+
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { BarChart2, ChevronRight, Clock, DollarSign, History, Package } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function Dashboard() {
+
+  const router = useRouter();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-blue-50">
       <header className="sticky top-0 z-10 border-b bg-white/80 backdrop-blur-sm">
@@ -43,8 +49,10 @@ export default function Dashboard() {
               <Clock className="mr-2 h-4 w-4" />
               Last updated: 5 mins ago
             </Button>
-            <Button variant="default" size="sm" className="bg-sky-600 hover:bg-sky-700">
-              Refresh
+            <Button variant="default" size="sm" className="bg-sky-600 hover:bg-sky-700" onClick={() => {
+              router.push('/make-new-contract');
+            }}>
+              Add New Contract
             </Button>
           </div>
         </div>
