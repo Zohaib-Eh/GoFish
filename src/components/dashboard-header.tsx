@@ -6,7 +6,7 @@ export function DashboardHeader() {
       <div className="flex items-center gap-3">
         <WaveIcon className="h-8 w-8 text-cyan-600" />
         <h1 className="text-3xl font-light tracking-tight text-slate-800">
-          <span className="font-medium text-cyan-700">Ocean</span>Importer
+          <span className="font-medium text-cyan-700">Fish</span>Go
         </h1>
       </div>
       <div className="flex items-center gap-4">

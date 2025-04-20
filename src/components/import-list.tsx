@@ -1,10 +1,13 @@
 "use client"
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { PackageIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { getContract, getSignedContract } from "@/lib/contracts"
+import { ethers } from "ethers"
+import { ChevronDownIcon, ChevronUpIcon, PackageIcon } from "lucide-react"
+import { useState } from "react"
+import WalletConnect from "./walletconnectether"
 
 export function ImportList() {
   const [expandedId, setExpandedId] = useState<number | null>(null)
@@ -46,6 +49,106 @@ export function ImportList() {
     setExpandedId(expandedId === id ? null : id)
   }
 
+  async function getDocuments() {
+    const readcontract = getContract();
+    const d = await readcontract.getD();
+
+    alert("gotcj")
+    alert(d);
+
+
+  }
+
+  async function payUpfront() {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = await getSignedContract(signer);
+
+    const readcontract = getContract();
+    // read tp then multiply by 60 / 100
+    const tp = await readcontract.tp();
+
+    // todo finishup the allow mint function
+    const amount = (tp * 60n) / 100n;
+
+    alert(amount);
+
+    const tx = await contract.pc({ value: amount });
+
+    const receipt = await tx.wait();
+
+
+    alert("paid");
+    alert(receipt.hash);
+  }
+
+  async function allowMintToOwner() {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = await getSignedContract(signer);
+
+    const tx = await contract.am();
+    const receipt = await tx.wait();
+
+
+    alert("paid");
+    alert(receipt.hash);
+
+  }
+
+  async function Pay1stInstallment() {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = await getSignedContract(signer);
+
+    const readcontract = getContract();
+    // read tp then multiply by 60 / 100
+    const tp = await readcontract.tp();
+    const ca = await readcontract.ca();
+    const pt = await readcontract.pt();
+
+
+
+    // todo finishup the allow mint function
+    const amount = (tp - ca) / pt;
+
+    alert(amount);
+
+    const tx = await contract.p({ value: amount });
+
+    const receipt = await tx.wait();
+
+
+    alert("paid");
+    alert(receipt.hash);
+  }
+
+  async function Pay2ndInstallment() {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = await getSignedContract(signer);
+
+    const readcontract = getContract();
+    // read tp then multiply by 60 / 100
+    const tp = await readcontract.tp();
+    const ca = await readcontract.ca();
+    const pt = await readcontract.pt();
+
+
+
+    // todo finishup the allow mint function
+    const amount = (tp - ca) / pt;
+
+    alert(amount);
+
+    const tx = await contract.p({ value: amount });
+
+    const receipt = await tx.wait();
+
+
+    alert("paid");
+    alert(receipt.hash);
+  }
   return (
     <Card className="border-none shadow-md bg-white">
       <CardHeader className="bg-gradient-to-r from-cyan-500 to-blue-500 pb-2">
@@ -53,76 +156,35 @@ export function ImportList() {
       </CardHeader>
       <CardContent className="p-4">
         <div className="space-y-3">
-          {imports.map((item) => (
-            <div
-              key={item.id}
-              className="overflow-hidden rounded-lg border border-slate-100 transition-all duration-200"
-            >
-              <div
-                className="flex items-center justify-between p-4 cursor-pointer bg-gradient-to-r from-cyan-50 to-blue-50 hover:from-cyan-100 hover:to-blue-100 transition-colors"
-                onClick={() => toggleExpand(item.id)}
-              >
-                <div className="flex items-center gap-3">
-                  <PackageIcon className="h-5 w-5 text-cyan-600" />
-                  <div>
-                    <h3 className="font-medium text-slate-800">{item.name}</h3>
-                    <p className="text-xs text-slate-500">Created on {item.date}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100">
-                    Pending {item.amount}
-                  </Badge>
-                  {expandedId === item.id ? (
-                    <ChevronUpIcon className="h-5 w-5 text-slate-400" />
-                  ) : (
-                    <ChevronDownIcon className="h-5 w-5 text-slate-400" />
-                  )}
-                </div>
-              </div>
 
-              {expandedId === item.id && (
-                <div className="p-4 bg-white border-t border-slate-100">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-3">
-                      <div>
-                        <p className="text-xs text-slate-500">Total Amount</p>
-                        <p className="font-medium text-slate-800">{item.amount}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-500">Paid Amount</p>
-                        <p className="font-medium text-slate-800">{item.paid}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-500">Estimated Arrival</p>
-                        <p className="font-medium text-slate-800">{item.eta}</p>
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <div>
-                        <p className="text-xs text-slate-500">Items</p>
-                        <div className="flex flex-wrap gap-2 mt-1">
-                          {item.items.map((itemName, index) => (
-                            <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                              {itemName}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="flex gap-2 mt-4">
-                        <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-white">
-                          Make Payment
-                        </Button>
-                        <Button size="sm" variant="outline" className="border-cyan-200 text-cyan-700 hover:bg-cyan-50">
-                          View Details
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+          <WalletConnect onConnect={() => { }} />
+          <Button onClick={() => {
+            getDocuments();
+          }}>
+            Get Documents
+          </Button>
+          <Button onClick={() => {
+            payUpfront();
+          }}>
+            Pay 60%
+          </Button>
+
+
+          <Button onClick={() => {
+            allowMintToOwner();
+          }}>
+            Allow Mint
+          </Button>
+          <Button onClick={() => {
+            Pay1stInstallment();
+          }}>
+            Pay 1st Installment
+          </Button>
+          <Button onClick={() => {
+            Pay2ndInstallment();
+          }}>
+            Pay 2nd Install ment
+          </Button>
         </div>
       </CardContent>
     </Card>
