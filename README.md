@@ -7,6 +7,8 @@
 
 # 🎣 Go Fish – Decentralized Payments for the Global Fishing Industry
 
+
+YT VIDEO DEMO LINK : https://youtu.be/K3qVfF0umlA
 **Go Fish** is a decentralized payment platform built on **Polkadot**, designed to streamline and secure the fishing import/export ecosystem. By leveraging blockchain, we tackle the industry's core pain points—delays, fees, and trust—while empowering exporters, importers, and investors through instant, transparent, and equitable transactions.
 
 ---
@@ -49,29 +51,4 @@ The fishing trade is a multi-billion-dollar industry riddled with inefficiencies
 - Shared security model protects against fraud and tampering.
 - **Smart contracts** automate token issuance, collateralization, and payouts.
 
----
 
-## 🛠 Getting Started
-
-### ⚙️ Prerequisites
-
-- **Rust** – Install the Rust toolchain (for Substrate dev)
-  ```bash
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-  ```
-🧪 Installation & Local Setup
-Clone the Repository
- ```bash
-git clone https://github.com/GoFishTeam/go-fish.git
-cd go-fish
- ```
-Build Backend
-
- ```bash
-cargo build --release
- ```
-Run a Local Node
-
- ```bash
-./target/release/go
-```
