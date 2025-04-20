@@ -1,23 +1,26 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import "./globals.css"
+"use client";
 
-const inter = Inter({ subsets: ["latin"] })
+import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { config} from "../lib/wagmi";
 
-export const metadata: Metadata = {
-  title: "GO FISH - Connecting Seafood Importers and Exporters",
-  description: "The premier platform for global seafood trade",
-}
+// Create a query client
+const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <WagmiProvider config={config}>
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
+        </WagmiProvider>
+      </body>
     </html>
-  )
+  );
 }
