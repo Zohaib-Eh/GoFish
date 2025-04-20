@@ -1,9 +1,25 @@
-import { DashboardHeader } from "@/components/dashboard-header"
-import { ImportList } from "@/components/import-list"
-import { PaymentChart } from "@/components/payment-chart"
-import { HistoryButton } from "@/components/history-button"
+'use client';
+
+import { ConnectWallet } from "@/components/ConnectWallet";
+import { DashboardHeader } from "@/components/dashboard-header";
+import { HistoryButton } from "@/components/history-button";
+import { ImportList } from "@/components/import-list";
+import { PaymentChart } from "@/components/payment-chart";
+import { useAccount } from "wagmi";
 
 export default function DashboardPage() {
+
+
+  const { isConnected, address } = useAccount();
+
+  if (!isConnected) {
+    return (<div className="min-h-screen bg-gradient-to-b from-sky-50 to-blue-50">
+      Please Connect your wallet to get started
+      <ConnectWallet classnames={"my-2"} />
+    </div>)
+  }
+
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-blue-50">
       <div className="container mx-auto px-4 py-8">
