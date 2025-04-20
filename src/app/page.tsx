@@ -1,10 +1,10 @@
-import Link from "next/link"
-import { WavyBackground } from "../components/wavy-background"
-import { SparklesCore } from "../components/sparkles"
-import { FloatingNavbar } from "../components/floating-navbar"
-import { CardHoverEffect } from "../components/card-hover-effect"
-import { MovingCards } from "../components/moving-cards"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { CardHoverEffect } from "../components/card-hover-effect"
+import { FloatingNavbar } from "../components/floating-navbar"
+import { MovingCards } from "../components/moving-cards"
+import { SparklesCore } from "../components/sparkles"
+import { WavyBackground } from "../components/wavy-background"
 
 export default function Home() {
   const testimonials = [
