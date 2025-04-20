@@ -1,9 +1,16 @@
-import Link from "next/link"
+'use client'
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft } from "lucide-react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+
 
 export default function SignInExporter() {
+
+  const router = useRouter();
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-teal-900 to-blue-950">
       <div className="flex-1 flex flex-col justify-center items-center p-4">
@@ -63,7 +70,16 @@ export default function SignInExporter() {
                 </div>
               </div>
 
-              <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white">Sign In</Button>
+              <Button onClick={() => {
+                localStorage.setItem("role", "exporter");
+                localStorage.setItem("imgUrl", "")
+                localStorage.setItem("name", "");
+                localStorage.setItem("email", "");
+
+                router.push('/dashboard-exp');
+
+
+              }} className="w-full bg-teal-600 hover:bg-teal-700 text-white">Sign In</Button>
             </form>
 
             <div className="mt-6 text-center">

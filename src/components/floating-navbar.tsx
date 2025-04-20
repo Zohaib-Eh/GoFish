@@ -1,9 +1,10 @@
 "use client"
-import type React from "react"
-import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 import { Menu, X } from "lucide-react"
+import Link from "next/link"
+import type React from "react"
+import { useEffect, useState } from "react"
+import { ConnectWallet } from "./ConnectWallet"
 
 export const FloatingNavbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -27,9 +28,8 @@ export const FloatingNavbar = () => {
 
   return (
     <div
-      className={`fixed top-4 inset-x-0 max-w-2xl mx-auto z-50 transition-all duration-300 ${
-        scrolled ? "bg-blue-950/80 backdrop-blur-md shadow-lg" : "bg-transparent"
-      } rounded-full border border-white/10`}
+      className={`fixed top-4 inset-x-0 max-w-2xl mx-auto z-50 transition-all duration-300 ${scrolled ? "bg-blue-950/80 backdrop-blur-md shadow-lg" : "bg-transparent"
+        } rounded-full border border-white/10`}
     >
       <div className="flex items-center justify-between p-4">
         <Link href="/" className="text-white font-bold text-xl">
@@ -42,9 +42,10 @@ export const FloatingNavbar = () => {
           <NavItem href="/features">Features</NavItem>
           <NavItem href="/pricing">Pricing</NavItem>
           <NavItem href="/contact">Contact</NavItem>
-          <Button className="ml-2 bg-white text-blue-900 hover:bg-blue-50" size="sm">
+          {/* <Button className="ml-2 hover:cursor-pointer bg-white text-blue-900 hover:bg-blue-50" size="sm">
             Connect to Wallet
-          </Button>
+          </Button> */}
+          <ConnectWallet classnames={"ml-2 hover:cursor-pointer bg-white text-blue-900 hover:bg-blue-50"} />
         </div>
 
         {/* Mobile Navigation Toggle */}

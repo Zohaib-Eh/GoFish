@@ -1,10 +1,13 @@
 "use client";
 
 import React from "react";
-import { useConnect, useAccount, useDisconnect } from "wagmi";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { injected } from "wagmi/connectors";
+import { Button } from "./ui/button";
 
-export function ConnectWallet() {
+export function ConnectWallet({ classnames }: {
+  classnames: any;
+}) {
   const { connect } = useConnect();
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
@@ -19,8 +22,8 @@ export function ConnectWallet() {
   }
 
   return (
-    <button onClick={() => connect({ connector: injected() })}>
+    <Button className={classnames} onClick={() => connect({ connector: injected() })}>
       Connect Wallet
-    </button>
+    </Button>
   );
 }
